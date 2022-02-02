@@ -1,6 +1,34 @@
 # Wordpress Mysql Transpose
 transpose a database using mysql
 
+**Add Dyamic Product Title**
+```php
+$sql = "
+	/* Select the product qty with product title */
+	SELECT GROUP_CONCAT(DISTINCT CONCAT( 
+		'MAX(CASE WHEN product_id = ''', 
+		product_id, 
+		''' THEN product_qty else 0 end) as ''', 
+	INSERT(product_name_list.product_name,1,3,''), 
+		'''')) 
+	INTO @query 
+	FROM ".$wp_order_product_lookup." AS opl
+	INNER JOIN(
+		SELECT 
+			p.ID         as id,
+			if(opl.variation_id = 0 ,post_title, (SELECT ".$wp_posts.".post_title FROM ".$wp_posts." WHERE ".$wp_posts.".id  = opl.variation_id)) as product_name
+		FROM 
+			".$wp_posts." AS p
+		INNER JOIN
+			".$wp_order_product_lookup." AS opl
+			ON p.id = opl.product_id
+		WHERE 
+			p.post_type = 'product_variation' OR p.post_type = 'product'
+			) AS product_name_list
+		ON product_name_list.id = opl.product_id;
+";
+```
+
 **Final Code**
 ```php
 function execute_multiline_sql($sql) {
