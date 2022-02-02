@@ -60,27 +60,26 @@ function get_data(){
 	$wpdb->query($sql);
 	$sql = "
 			SET @query = CONCAT('
-								SELECT ops.order_id, ops.status, main_table.*,', 
-								@query,'
-								FROM 
-									(
-									SELECT 
-										pm.post_id                                                                            		       AS order_id,
-										CONCAT( GROUP_CONCAT( IF(pm.meta_key=''_billing_first_name'', pm.meta_value, NULL) ), '' '', 
-												    GROUP_CONCAT( IF(pm.meta_key=''_billing_last_name'', pm.meta_value, NULL) ))  	         AS Name,
-										GROUP_CONCAT( IF(pm.meta_key=''_instagram_id'', pm.meta_value, NULL) )      	         AS IG,
-										GROUP_CONCAT( IF(pm.meta_key=''_time_slot'', pm.meta_value, NULL) )  	         AS Time_Slot,
-										GROUP_CONCAT( IF(pm.meta_key=''_payment_method'', pm.meta_value, NULL) )      	       AS Payment_Method,
-										GROUP_CONCAT( IF(pm.meta_key=''_order_total'', pm.meta_value, NULL) )                 	         AS Total,
-										GROUP_CONCAT( IF(pm.meta_key=''_paid_date'', pm.meta_value, NULL) )                              AS Paid_Date
+					SELECT ops.order_id, ops.status, main_table.*,', 
+					@query,'
+					FROM (
+						SELECT 
+							pm.post_id                                                                            		       AS order_id,
+							CONCAT( GROUP_CONCAT( IF(pm.meta_key=''_billing_first_name'', pm.meta_value, NULL) ), '' '', 
+		     					        GROUP_CONCAT( IF(pm.meta_key=''_billing_last_name'', pm.meta_value, NULL) ))  	         AS Name,
+								GROUP_CONCAT( IF(pm.meta_key=''_instagram_id'', pm.meta_value, NULL) )      	         AS IG,
+								GROUP_CONCAT( IF(pm.meta_key=''_time_slot'', pm.meta_value, NULL) )  	         AS Time_Slot,
+								GROUP_CONCAT( IF(pm.meta_key=''_payment_method'', pm.meta_value, NULL) )      	       AS Payment_Method,
+								GROUP_CONCAT( IF(pm.meta_key=''_order_total'', pm.meta_value, NULL) )                 	         AS Total,
+								GROUP_CONCAT( IF(pm.meta_key=''_paid_date'', pm.meta_value, NULL) )                              AS Paid_Date
 
-									FROM 
-										".$wp_postmeta." AS pm 
+						FROM 
+							".$wp_postmeta." AS pm 
 
-									WHERE 
-										pm.post_id IN ( SELECT DISTINCT ".$wp_wc_order_stats.".order_id FROM ".$wp_wc_order_stats." )
+						WHERE 
+							pm.post_id IN ( SELECT DISTINCT ".$wp_wc_order_stats.".order_id FROM ".$wp_wc_order_stats." )
 
-									GROUP BY pm.post_id
+							GROUP BY pm.post_id
 
 								) AS main_table /* Choose data from post when it has order stats */
 								INNER JOIN
