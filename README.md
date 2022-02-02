@@ -1,5 +1,6 @@
 # Wordpress Mysql Transpose
 transpose a database using mysql
+
 **Set The Global Variable First**
 ```php
 global $wpdb;
