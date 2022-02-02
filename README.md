@@ -60,7 +60,7 @@ SET @query = CONCAT('
 	 ;');
 ```
 
-**Final Code**
+**Final Code (PHP)**
 ```php
 function execute_multiline_sql($sql) {
     global $wpdb;
