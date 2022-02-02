@@ -81,17 +81,17 @@ function get_data(){
 
 							GROUP BY pm.post_id
 
-								) AS main_table /* Choose data from post when it has order stats */
-								INNER JOIN
-									".$wp_order_product_lookup." as opl
-										ON opl.order_id = main_table.order_id
-								INNER JOIN
-									".$wp_wc_order_stats." AS ops 
-										ON ops.order_id = opl.order_id
-								WHERE
-									ops.status IN (".$selected_status.")  
-								GROUP BY ops.order_id
-							   ;');
+						) AS main_table /* Choose data from post when it has order stats */
+					INNER JOIN
+						".$wp_order_product_lookup." as opl
+						ON opl.order_id = main_table.order_id
+					INNER JOIN
+						".$wp_wc_order_stats." AS ops 
+						ON ops.order_id = opl.order_id
+					WHERE
+						ops.status IN (".$selected_status.")  
+						GROUP BY ops.order_id
+				 ;');
 	";
 	$wpdb->query($sql);
 	$sql = "PREPARE test FROM @query;";
