@@ -2,8 +2,7 @@
 transpose a database using mysql
 
 **Add Dyamic Product Title**
-```php
-$sql = "
+```sql
 	/* Select the product qty with product title */
 	SELECT GROUP_CONCAT(DISTINCT CONCAT( 
 		'MAX(CASE WHEN product_id = ''', 
@@ -26,7 +25,6 @@ $sql = "
 			p.post_type = 'product_variation' OR p.post_type = 'product'
 			) AS product_name_list
 		ON product_name_list.id = opl.product_id;
-";
 ```
 
 **Join The @query**
