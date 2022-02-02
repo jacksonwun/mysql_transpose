@@ -27,7 +27,7 @@ INNER JOIN(
 	ON product_name_list.id = opl.product_id;
 ```
 
-**Join The @query**
+**Join The @query (SQL)**
 ```sql
 SET @query = CONCAT('
 		SELECT ops.order_id, ops.status, main_table.*,', 
