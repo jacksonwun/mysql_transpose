@@ -1,6 +1,7 @@
-# mysql_transpose
+# Mysql Transpose
 transpose a database using mysql
 
+```
 function execute_multiline_sql($sql) {
     global $wpdb;
     $sqlParts = array_filter(explode("\r\n", $sql));
@@ -104,3 +105,4 @@ function get_data(){
 }
 add_action( 'wp_ajax_get_all_order', 'get_data' );
 add_action( 'wp_ajax_nopriv_get_all_order', 'get_data' );
+```
