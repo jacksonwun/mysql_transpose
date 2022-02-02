@@ -1,4 +1,4 @@
-# Mysql Transpose
+# Wordpress Mysql Transpose
 transpose a database using mysql
 
 **Final Code**
