@@ -1,7 +1,7 @@
 # Mysql Transpose
 transpose a database using mysql
 
-```
+```php
 function execute_multiline_sql($sql) {
     global $wpdb;
     $sqlParts = array_filter(explode("\r\n", $sql));
