@@ -1,7 +1,7 @@
 # Wordpress Mysql Transpose
 transpose a database using mysql
 
-**Set The Global Variable First**
+**Set The Global Variable**
 ```php
 global $wpdb;
 $wp_posts                        = $wpdb->prefix . 'posts';
@@ -18,11 +18,11 @@ SELECT GROUP_CONCAT(DISTINCT CONCAT(
 	'MAX(CASE WHEN product_id = ''', 
 	product_id, 
 	''' THEN product_qty else 0 end) as ''', 
-INSERT(product_name_list.product_name,1,3,''), 
-	'''')) 
-INTO @query 
+	INSERT(product_name_list.product_name,1,3,''), 
+	'''')) INTO @query 
 FROM ".$wp_order_product_lookup." AS opl
 INNER JOIN(
+	/* Select Order ID and Product Name from wp_posts and wp_order_product_lookup  */
 	SELECT 
 		p.ID         as id,
 		if(opl.variation_id = 0 ,post_title, (SELECT ".$wp_posts.".post_title FROM ".$wp_posts." WHERE ".$wp_posts.".id  = opl.variation_id)) as product_name
@@ -109,20 +109,19 @@ function get_data(){
 			product_id, 
 			''' THEN product_qty else 0 end) as ''', 
 			INSERT(product_name_list.product_name,1,3,''), 
-			'''')) 
-		INTO @query 
+			'''')) INTO @query 
 		FROM ".$wp_order_product_lookup." AS opl
 		INNER JOIN(
-				SELECT 
-					p.ID         as id,
-					if(opl.variation_id = 0 ,post_title, (SELECT ".$wp_posts.".post_title FROM ".$wp_posts." WHERE ".$wp_posts.".id  = opl.variation_id)) as product_name
-				FROM 
-					".$wp_posts." AS p
-				INNER JOIN
-					".$wp_order_product_lookup." AS opl
-					ON p.id = opl.product_id
-				WHERE 
-					p.post_type = 'product_variation' OR p.post_type = 'product'
+			SELECT 
+				p.ID         as id,
+				if(opl.variation_id = 0 ,post_title, (SELECT ".$wp_posts.".post_title FROM ".$wp_posts." WHERE ".$wp_posts.".id  = opl.variation_id)) as product_name
+			FROM 
+				".$wp_posts." AS p
+			INNER JOIN
+				".$wp_order_product_lookup." AS opl
+				ON p.id = opl.product_id
+			WHERE 
+				p.post_type = 'product_variation' OR p.post_type = 'product'
 			) AS product_name_list
 			ON product_name_list.id = opl.product_id;
 	";
