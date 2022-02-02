@@ -1,5 +1,14 @@
 # Wordpress Mysql Transpose
 transpose a database using mysql
+**Set The Global Variable First**
+```php
+global $wpdb;
+$wp_posts                        = $wpdb->prefix . 'posts';
+$wp_postmeta                     = $wpdb->prefix . 'postmeta';
+$wp_order_product_lookup         = $wpdb->prefix . 'wc_order_product_lookup';
+$wp_wc_order_stats               = $wpdb->prefix . 'wc_order_stats ';
+$wp_wc_order_product_lookup      = $wpdb->prefix . 'wc_order_product_lookup ';
+```
 
 **Add Dyamic Product Title (SQL)**
 ```sql
