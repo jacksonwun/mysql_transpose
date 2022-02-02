@@ -39,25 +39,28 @@ INNER JOIN(
 
 **Join The @query (SQL)**
 ```sql
+/* Concat data to a line of script */
 SET @query = CONCAT('
-		SELECT ops.order_id, ops.status, main_table.*,', 
+		/* Select id, status and remaining data from wp_postmeta(filtered), wp_order_product_lookup and wp_wc_order_stats */
+		SELECT ops.order_id, ops.status, main_table.* ,', 
 		@query,'
 		FROM (
+			/* Choose data from post when it has order stats */
 			SELECT 
 				pm.post_id                                                                            		       AS order_id,
 				CONCAT( GROUP_CONCAT( IF(pm.meta_key=''_billing_first_name'', pm.meta_value, NULL) ), '' '', 
-   					GROUP_CONCAT( IF(pm.meta_key=''_billing_last_name'', pm.meta_value, NULL) ))  	         AS Name,
-					GROUP_CONCAT( IF(pm.meta_key=''_instagram_id'', pm.meta_value, NULL) )      	         AS IG,
-					GROUP_CONCAT( IF(pm.meta_key=''_time_slot'', pm.meta_value, NULL) )  	         AS Time_Slot,
-					GROUP_CONCAT( IF(pm.meta_key=''_payment_method'', pm.meta_value, NULL) )      	       AS Payment_Method,
-					GROUP_CONCAT( IF(pm.meta_key=''_order_total'', pm.meta_value, NULL) )                 	         AS Total,
-					GROUP_CONCAT( IF(pm.meta_key=''_paid_date'', pm.meta_value, NULL) )                              AS Paid_Date
+   					GROUP_CONCAT( IF(pm.meta_key=''_billing_last_name'', pm.meta_value, NULL) ))  	               AS Name,
+					GROUP_CONCAT( IF(pm.meta_key=''_instagram_id'', pm.meta_value, NULL) )      	               AS IG,
+					GROUP_CONCAT( IF(pm.meta_key=''_time_slot'', pm.meta_value, NULL) )  	                       AS Time_Slot,
+					GROUP_CONCAT( IF(pm.meta_key=''_payment_method'', pm.meta_value, NULL) )      	               AS Payment_Method,
+					GROUP_CONCAT( IF(pm.meta_key=''_order_total'', pm.meta_value, NULL) )             	       AS Total,
+					GROUP_CONCAT( IF(pm.meta_key=''_paid_date'', pm.meta_value, NULL) )                            AS Paid_Date
 			FROM 
 				".$wp_postmeta." AS pm 
 			WHERE 
 				pm.post_id IN ( SELECT DISTINCT ".$wp_wc_order_stats.".order_id FROM ".$wp_wc_order_stats." )
 				GROUP BY pm.post_id
-			) AS main_table /* Choose data from post when it has order stats */
+			) AS main_table
 		INNER JOIN
 			".$wp_order_product_lookup." as opl
 			ON opl.order_id = main_table.order_id
