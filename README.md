@@ -68,9 +68,9 @@ function get_data(){
 										pm.post_id                                                                            		       AS order_id,
 										CONCAT( GROUP_CONCAT( IF(pm.meta_key=''_billing_first_name'', pm.meta_value, NULL) ), '' '', 
 												    GROUP_CONCAT( IF(pm.meta_key=''_billing_last_name'', pm.meta_value, NULL) ))  	         AS Name,
-										GROUP_CONCAT( IF(pm.meta_key=''_instagram_id_add_field'', pm.meta_value, NULL) )      	         AS IG,
-										GROUP_CONCAT( IF(pm.meta_key=''_pick_up_time_slot_add_field'', pm.meta_value, NULL) )  	         AS Time_Slot,
-										GROUP_CONCAT( IF(pm.meta_key=''_payment_method_add_field'', pm.meta_value, NULL) )      	       AS Payment_Method,
+										GROUP_CONCAT( IF(pm.meta_key=''_instagram_id'', pm.meta_value, NULL) )      	         AS IG,
+										GROUP_CONCAT( IF(pm.meta_key=''_time_slot'', pm.meta_value, NULL) )  	         AS Time_Slot,
+										GROUP_CONCAT( IF(pm.meta_key=''_payment_method'', pm.meta_value, NULL) )      	       AS Payment_Method,
 										GROUP_CONCAT( IF(pm.meta_key=''_order_total'', pm.meta_value, NULL) )                 	         AS Total,
 										GROUP_CONCAT( IF(pm.meta_key=''_paid_date'', pm.meta_value, NULL) )                              AS Paid_Date
 
